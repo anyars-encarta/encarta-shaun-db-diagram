@@ -33,3 +33,14 @@ CREATE TABLE treatments (
 	type VARCHAR(255),
 	name VARCHAR(255)
 )
+
+CREATE TABLE admissions (
+    medical_id INT,
+	CONSTRAINT fk_medicals FOREIGN KEY(medical_id) REFERENCES medical_histories(id)
+	ON DELETE CASCADE,
+	
+    treatment_id INT,
+	CONSTRAINT fk_treatments FOREIGN KEY(treatment_id) REFERENCES treatments(id)
+	ON DELETE CASCADE,
+	PRIMARY KEY (medical_id, treatment_id)
+);
