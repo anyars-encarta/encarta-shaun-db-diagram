@@ -11,6 +11,8 @@ CREATE TABLE medical_histories (
 	status VARCHAR
 )
 
+CREATE INDEX ON medical_histories (patient_id);
+
 CREATE TABLE invoices (
 	id SERIAL PRIMARY KEY,
 	total_amount DECIMAL(8, 2),
@@ -18,6 +20,8 @@ CREATE TABLE invoices (
 	payed_at TIMESTAMP,
 	medical_history_id INTEGER REFERENCES medical_histories(id)
 )
+
+CREATE INDEX ON invoices (medical_history_id);
 
 CREATE TABLE invoice_items (
 	id SERIAL PRIMARY KEY,
@@ -28,13 +32,15 @@ CREATE TABLE invoice_items (
 	treatment_id INTEGER REFERENCES treatments(id)
 )
 
+CREATE INDEX ON invoice_items (invoice_id, treatment_id);
+
 CREATE TABLE treatments (
 	id SERIAL PRIMARY KEY,
 	type VARCHAR(255),
 	name VARCHAR(255)
 )
 
-CREATE TABLE admissions (
+CREATE TABLE medical_history_treatment (
     medical_id INT,
 	CONSTRAINT fk_medicals FOREIGN KEY(medical_id) REFERENCES medical_histories(id)
 	ON DELETE CASCADE,
@@ -44,3 +50,5 @@ CREATE TABLE admissions (
 	ON DELETE CASCADE,
 	PRIMARY KEY (medical_id, treatment_id)
 );
+
+CREATE INDEX ON medical_history_treatment (medical_id, treatment_id);
